@@ -1,0 +1,29 @@
+version: '3.5'
+
+services:
+  postgres:
+    container_name: limu_postgres_container
+    image: postgres
+    environment:
+      POSTGRES_USER: limu_user
+      POSTGRES_PASSWORD: limu_password
+      POSTGRES_DB: limu_db
+      PGDATA: /data/postgres
+    volumes:
+       - postgres:/data/postgres
+    ports:
+      - "5433:5432"
+    networks:
+      - postgres
+    restart: unless-stopped
+
+
+
+networks:
+  postgres:
+    driver: bridge
+
+volumes:
+    postgres:
+
+ 

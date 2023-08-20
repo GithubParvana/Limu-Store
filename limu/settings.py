@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,7 +38,21 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # custom apps
+    'accounts',
+    'core',
+    'blogs',
+    'products',
+    'cart',
+
+    # third-party apps
+    'phonenumber_field',
+
 ]
+
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -49,12 +64,15 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+
+
 ROOT_URLCONF = 'limu.urls'
+
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -67,6 +85,7 @@ TEMPLATES = [
     },
 ]
 
+
 WSGI_APPLICATION = 'limu.wsgi.application'
 
 
@@ -74,10 +93,23 @@ WSGI_APPLICATION = 'limu.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
+    # }
+
+    
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'limu_db',
+        'USER': 'limu_user',
+        'PASSWORD': 'limu_password',
+        'HOST': 'localhost',
+        'PORT': '5433',
     }
+
+
+
 }
 
 
@@ -117,7 +149,34 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+STATICFILES_DIRS = [
+    BASE_DIR, "static/"
+]
+
+# STATIC_ROOT = 'static/'
+
+
+
+
+# Absolute filesystem path to the directory that will hold user-uploaded files.
+MEDIA_URL = '/media/'
+# MEDIA_ROOT = BASE_DIR / 'media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
+
+
+
+
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# PhoneNumberField config
+PHONENUMBER_DB_FORMAT = "RFC3966"
+
+
+AUTH_USER_MODEL = 'accounts.User'
